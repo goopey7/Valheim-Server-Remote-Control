@@ -1,5 +1,13 @@
-﻿
-#include "Client.h"
+﻿#include "Client.h"
+
+#include <string>
+#define WIN32_LEAN_AND_MEAN
+
+
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 
 // Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
@@ -7,8 +15,15 @@
 #pragma comment (lib, "Mswsock.lib")
 #pragma comment (lib, "AdvApi32.lib")
 
-
-
+WSADATA wsaData;
+SOCKET ConnectSocket = INVALID_SOCKET;
+struct addrinfo *result = NULL,
+                *ptr = NULL,
+                hints;
+const char* sendbuf = "JOIN";
+char recvbuf[DEFAULT_BUFLEN];
+int iResult;
+int recvbuflen = DEFAULT_BUFLEN;
 
 Client::Client(const char* ipAddr)
 {
@@ -68,12 +83,14 @@ Client::Client(const char* ipAddr)
 		return;
 	}
 
-	Send("JOIN");
+	if(Send("JOIN"))
+		bConnected=true;
 }
 
 Client::~Client()
 {
-	Send("LEAVE");
+	if(Send("LEAVE"))
+		bConnected=false;
 	
 	// shutdown the connection since no more data will be sent
 	iResult = shutdown(ConnectSocket, SD_SEND);
@@ -89,7 +106,12 @@ Client::~Client()
 	WSACleanup();
 }
 
-void Client::Send(const char* message)
+bool Client::IsConnected()
+{
+	return bConnected;
+}
+
+bool Client::Send(const char* message)
 {
 	std::string msg(message);
 	// Send an initial buffer
@@ -99,5 +121,7 @@ void Client::Send(const char* message)
 		printf("send failed with error: %d\n", WSAGetLastError());
 		closesocket(ConnectSocket);
 		WSACleanup();
+		return false;
 	}
+	return true;
 }
