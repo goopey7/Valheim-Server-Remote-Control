@@ -16,6 +16,7 @@ private:
 	wxButton* connectButton = nullptr;
 	wxStaticText* connectedText = nullptr;
 	wxStaticText* instructions = nullptr;
+	wxStaticText* samCollier = nullptr;
 	void OnButtonClicked(wxCommandEvent &event);
 	
 	wxDECLARE_EVENT_TABLE();

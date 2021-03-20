@@ -10,6 +10,9 @@ ClientGUI::ClientGUI() : wxFrame(nullptr, wxID_ANY, "Valheim Server Remote Contr
 	ipBox = new wxTextCtrl(this, wxID_ANY, "", wxPoint(10, 30), wxSize(300, 20));
 	connectButton = new wxButton(this, 16, "Connect", wxPoint(10, 70), wxSize(150, 50));
 	connectedText = new wxStaticText(this, wxID_ANY, "Not Connected", wxPoint(10, 140), wxSize(87, 20));
+	samCollier = new wxStaticText(this, wxID_ANY, "Sam Collier", wxPoint(215, 180), wxSize(87, 20));
+	wxFont author(24,wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+	samCollier->SetFont(author);
 }
 
 ClientGUI::~ClientGUI()
