@@ -81,16 +81,7 @@ int __cdecl main(void)
 	std::string command;
 	std::thread input(ShellInput, std::ref(command), std::ref(server));
 	std::vector<std::thread> openSockets;
-
-	
-
-
-
 	openSockets.push_back(std::thread(OpenSocket, std::ref(server), std::ref(openSockets)));
-	while(command != "exit")
-	{
-		
-	}
 	input.join();
 	return 0;
 }
